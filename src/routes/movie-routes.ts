@@ -36,8 +36,18 @@ const movies: Movie[] = [
   },
 ];
 
+// /api/movies?minYear=1985&maxYear=2010
 movieRoutes.get("/", function (req, res) {
-  res.json(movies);
+  let minYear = Number.parseInt(req.query.minYear as string);
+  let maxYear = Number.parseInt(req.query.maxYear as string);
+  if (minYear && maxYear) {
+    let filteredMovies: Movie[] = movies.filter(
+      (movie) => movie.year >= minYear && movie.year <= maxYear
+    );
+    res.json(filteredMovies);
+  } else {
+    res.json(movies);
+  }
 });
 
 movieRoutes.get("/:id", function (req, res) {
